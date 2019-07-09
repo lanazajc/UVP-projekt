@@ -34,11 +34,25 @@ class snake(object):
     def draw(self, surface):
         pass
 
-    def draw_grid(self, w, rows, surface):
-        pass
+def draw_grid(w, rows, surface):
+    size_between = w // rows
+
+    x = 0
+    y = 0
+    for l in range(rows):
+        x = x + size_between
+        y = y + size_between
+
+        pygame.draw.line(surface, (255, 255, 255), (x, 0), (x, w)) # navpične črte 
+
+        pygame.draw.line(surface, (255, 255, 255), (0, y), (w, y)) # vodoravne črte
+
 
 def redraw_window(surface):
-    pass
+    global rows, with expression as target:
+    win.fill(0, 0, 0)
+    draw_grid(width, rows, surface)
+    pygame.display.update()
 
 def random_snack(rows, items):
     pass
@@ -47,8 +61,15 @@ def message_box(subject, content):
     pass
 
 def main():
+    global width, rows
     width = 500
     height = 500
     rows = 20
     win = pygame.display.set_mode((width, height)) #naredi začetno okence
+    s = snake((255, 0, 0), (10,10))
+    flag = True
+    while flag: 
+        pygame.time.delay(50) #upočasni program, manjša številka hitreje gre
+        clock.tick(10) # manjša številka, počasneje gre
+        redraw_window(win)
 
