@@ -34,7 +34,7 @@ class snake(object):
     def draw(self, surface):
         pass
 
-    def draw_grid(w, rows, surface):
+    def draw_grid(self, w, rows, surface):
         pass
 
 def redraw_window(surface):
