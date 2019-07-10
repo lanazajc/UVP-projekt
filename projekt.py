@@ -73,13 +73,13 @@ class Snake(object):
                 elif c.dirnx == 1 and c.pos[0] >= c.rows - 1: # premikamo se desno, poz. je (x, y), pos[0] = x če je več kot "19" 
                     c.pos = (0, c.pos[1])  # prestavimo na (0, y isti (vrstica ista))
 
-                elif c.dirny == 1 and c.pos[1] >= c.rows - 1: 
-                    c.pos = (c.pos[0], 0)
+                elif c.dirny == 1 and c.pos[1] >= c.rows - 1: # premikamo se dol, če y pozicija večja ali enaka "19"
+                    c.pos = (c.pos[0], 0) # nas premakne gor na vrh ekrana ( očitno številči od zgoraj na vzdol)
 
-                elif c.dirny == -1 and c.pos[1] <= 0:
-                    c.pos = (c.pos[0], c.rows -1)
+                elif c.dirny == -1 and c.pos[1] <= 0: # premikamo se gor, če je y pozicija manjša ali enaka nič
+                    c.pos = (c.pos[0], c.rows -1) # prestavi nas na dno igralne plošče, x ostaja isti 
                 
-                else: 
+                else:  # če se ne zgoodi nič od tega naj cube nadaljuje svojo pot v isti smeri
                     c.move(c.dirnx, c.dirny)
             
 
@@ -91,7 +91,11 @@ class Snake(object):
         pass
 
     def draw(self, surface):
-        pass
+        for i, c in enumerate(self.body):
+            if i == 0: # prvi index je glava kače 
+                c.draw(surface, True) # true doda oči kači?
+            else: 
+                c.draw(surface)
 
 def draw_grid(w, rows, surface):
     size_between = w // rows
@@ -102,7 +106,7 @@ def draw_grid(w, rows, surface):
         x = x + size_between
         y = y + size_between
 
-        pygame.draw.line(surface, (255, 255, 255), (x, 0), (x, w)) # navpične črte 
+        pygame.draw.line(surface, (255, 255, 255), (x, 0), (x, w)) # navpične črte # barva, začetna točka, končna točka 
         pygame.draw.line(surface, (255, 255, 255), (0, y), (w, y)) # vodoravne črte
 
 
