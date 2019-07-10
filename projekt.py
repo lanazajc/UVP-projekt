@@ -5,19 +5,29 @@ import pygame
 import tkinter as tk
 from tkinter import messagebox
 
-class Cube(object):
-    rows = 0
-    w = 0
+class cube(object):
+    rows = 20
+    w = 500
     def __init__(self, start, dirnx=1, dirny=0, color=(255, 0, 0)):
-        pass
+        self.pos = start
+        self.dirnx = 1 # da se kača začne takoj premikati
+        self.dirny = 0
+        self.color = color
     
     def move(self, dirnx, dirny):
-        pass
+        self.dirnx = dirnx
+        self.dirny = dirny
+        self.pos(self.pos[0] + self.dirnx, self.pos[1] + self.dirny)
 
-    def draw(self, surface):
-        pass
+    def draw(self, surface, eyes=False):
+        distance = self.w // self.rows
+        i = self.pos[0] # vrstica 
+        j = self.pos[1] # stolpec
 
-class Snake(object):
+        pygame.draw.rect(surface, self.color, (i * distance + 1, j * distance + 1, distance -2, distance -2))
+        
+
+class snake(object):
     body = []
     turns = {} # slovar, dodamo mu trenutno pozicijo glave, kjer mora telo obrnit
     
@@ -95,7 +105,7 @@ class Snake(object):
             if i == 0: # prvi index je glava kače 
                 c.draw(surface, True) # true doda oči kači?
             else: 
-                c.draw(surface)
+                c.draw(surface) # ostale cube nariše normalno
 
 def draw_grid(w, rows, surface):
     size_between = w // rows
@@ -111,8 +121,9 @@ def draw_grid(w, rows, surface):
 
 
 def redraw_window(surface):
-    global rows, width
+    global rows, width, s
     surface.fill((0, 0, 0))
+    s.draw(surface)
     draw_grid(width, rows, surface)
     pygame.display.update()
 
@@ -123,7 +134,7 @@ def message_box(subject, content):
     pass
 
 def main():
-    global width, rows
+    global width, rows, s
     width = 500
     rows = 20
     win = pygame.display.set_mode((width, width)) #naredi začetno okence
