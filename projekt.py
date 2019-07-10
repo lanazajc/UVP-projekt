@@ -35,6 +35,7 @@ class cube(object):
             circle_middle2 = (i * distance + distance - radius * 2, j * distance + 8)
             pygame.draw.circle(surface, (0, 0, 0), circle_middle, radius) # surface, barva (črna), pozicija, radij
             pygame.draw.circle(surface, (0, 0 ,0), circle_middle2, radius)
+            
         
 
 class snake(object):
@@ -51,7 +52,6 @@ class snake(object):
     def move(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.display.quit()  # ne zapre se
                 pygame.quit() # ne zapre okenca 
 
             keys = pygame.key.get_pressed() # seznam vseh tipk z True Ali False (ali je bilo kliknjeno)
@@ -105,7 +105,11 @@ class snake(object):
 
 
     def reset(self, pos):
-        pass
+        self.head = cube(pos)
+        self.body = []
+        self.turns = {}
+        self.dirnx = 0
+        self.dirny = 1
 
     def add_cube(self):   # dodajanje nove kocke kači, najprej moramo ugotovit kje se nahaja zadnji cube kače, da dodamo na konec kače
         tail = self.body[-1] 
@@ -119,6 +123,9 @@ class snake(object):
             self.body.append((cube(tail.pos[0], tail.pos[1] - 1)))
         elif dx == 0 and dy == -1: # če se pomikamo gor 
             self.body.append(cube((tail.pos[0], tail.pos[1] + 1)))
+
+        self.body[-1].dirnx = dx
+        self.body[-1].dirny = dy
 
     def draw(self, surface):
         for i, c in enumerate(self.body):
@@ -141,9 +148,10 @@ def draw_grid(w, rows, surface):
 
 
 def redraw_window(surface):
-    global rows, width, s
+    global rows, width, s, snack
     surface.fill((0, 0, 0))
     s.draw(surface)
+    snack.draw(surface)
     draw_grid(width, rows, surface)
     pygame.display.update()
 
@@ -162,10 +170,18 @@ def random_snack(rows, items):
 
 
 def message_box(subject, content):
-    pass
+    root = tk.Tk() # novo okence
+    root.attributes("-topmost", True) # Okence bo vedno na vrhu vseh okencev
+    root.withdraw()
+    messagebox.showinfo(subject, content)
+    try: 
+        root.destroy()
+    except:
+        pass
+
 
 def main():
-    global width, rows, s
+    global width, rows, s, snack
     width = 500
     rows = 20
     win = pygame.display.set_mode((width, width)) #naredi začetno okence
@@ -181,8 +197,16 @@ def main():
         if s.body[0].pos == snack.pos:
             s.add_cube()
             snack = cube(random_snack(rows, s), color=(0, 255, 0))
+
+        for x in range(len(s.body)):
+            if s.body[x].pos in list(map(lambda z:z.pos, s.body[x+1:])):
+                print ('Score: ', len(s.body))
+                message_box('You Lost!', 'Play Again')
+                message_box()
+                s.reset((10, 10))
+                break
+
         redraw_window(win)
         
 
 main()
-pygame.quit() # tut ne pomaga
