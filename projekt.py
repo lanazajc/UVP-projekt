@@ -25,6 +25,16 @@ class cube(object):
         j = self.pos[1] # stolpec
 
         pygame.draw.rect(surface, self.color, (i * distance + 1, j * distance + 1, distance -2, distance -2))
+        # +1, -2 je zato, da kvadrat ne pokrije črt belih igralne plošče oz. da ostane znotrj polja
+
+        # Ne nujna koda ta oči kače:
+        if eyes:
+            centre = distance // 2
+            radius = 3
+            circle_middle = (i * distance + centre - radius, j * distance + 8)
+            circle_middle2 = (i * distance + distance - radius * 2, j * distance + 8)
+            pygame.draw.circle(surface, (0, 0, 0), circle_middle, radius) # surface, barva (črna), pozicija, radij
+            pygame.draw.circle(surface, (0, 0 ,0), circle_middle2, radius)
         
 
 class snake(object):
