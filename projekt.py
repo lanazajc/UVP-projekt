@@ -17,7 +17,7 @@ class cube(object):
     def move(self, dirnx, dirny):
         self.dirnx = dirnx
         self.dirny = dirny
-        self.pos(self.pos[0] + self.dirnx, self.pos[1] + self.dirny)
+        self.pos = (self.pos[0] + self.dirnx, self.pos[1] + self.dirny)
 
     def draw(self, surface, eyes=False):
         distance = self.w // self.rows
@@ -155,7 +155,9 @@ def main():
     while flag: 
         pygame.time.delay(50) #upočasni program, manjša številka hitreje gre
         clock.tick(10) # manjša številka, počasneje gre
+        s.move()
         redraw_window(win)
+        
 
 main()
 pygame.quit() # tut ne pomaga
