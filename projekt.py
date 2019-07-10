@@ -5,7 +5,7 @@ import pygame
 import tkinter as tk
 from tkinter import messagebox
 
-class cube(object):
+class Cube(object):
     rows = 0
     w = 0
     def __init__(self, start, dirnx=1, dirny=0, color=(255, 0, 0)):
@@ -17,13 +17,72 @@ class cube(object):
     def draw(self, surface):
         pass
 
-class snake(object):
+class Snake(object):
+    body = []
+    turns = {} # slovar, dodamo mu trenutno pozicijo glave, kjer mora telo obrnit
     
     def __init__(self, color, pos):
-        pass
+        self.color = color
+        self.head = cube(pos) # glava kače je kvadrat v dani poziciji
+        self.body.append(self.head) # telesu dodamo glavo (body je seznam, glava na začetku)
+        self.dirnx = 0
+        self.dirny = 1 
 
     def move(self):
-        pass
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.display.quit()  # ne zapre se
+                pygame.quit() # ne zapre okenca 
+
+            keys = pygame.key.get_pressed() # seznam vseh tipk z True Ali False (ali je bilo kliknjeno)
+
+            for key in keys:# čez keys preletimo kater od 4 tipk se je pritisnila (je TRUE)
+                if keys[pygame.K_LEFT]:
+                    self.dirnx = -1
+                    self.dirny = 0 
+                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny] # slovarju dodamo ključ trenutna poz glave, vrednst je pozicija
+
+                elif keys[pygame.K_RIGHT]:
+                    self.dirnx = 1
+                    self.dirny = 0
+                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                
+                elif keys[pygame.K_UP]:
+                    self.dirnx = 0
+                    self.dirny = -1
+                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+
+                elif keys[pygame.K_DOWN]:
+                    self.dirnx = 0
+                    self.dirny = 1
+                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+
+
+        for i, c in enumerate(self.body): # indeks, cube v body
+            p = c.pos[:] # p je pozicija za vsak cube 
+            if p in self.turns: # pogledamo če je p v slovarju obratov, če je:
+                turn = self.turns[p]
+                c.move(turn[0], turn[1])
+                if i == len(self.body) - 1: # če smo na zadnji cube, bomo odstranili pravilo za obrat 
+                    self.turns.pop(p)
+
+            else: 
+                if c.dirnx == -1 and c.pos[0] <= 0:  # premikamo se levo, pozicija je <=0
+                    c.pos = (c.rows - 1, c.pos[1]) # spremenimo pozicijo. gremo na desno stran  , y ostane isti
+                                                   # c.rows -1 : če mamo 20 stolpcev nas postavi na 19indeks tj. na prvi okenček esno pri istem y ( v isti vrstici)
+                elif c.dirnx == 1 and c.pos[0] >= c.rows - 1: # premikamo se desno, poz. je (x, y), pos[0] = x če je več kot "19" 
+                    c.pos = (0, c.pos[1])  # prestavimo na (0, y isti (vrstica ista))
+
+                elif c.dirny == 1 and c.pos[1] >= c.rows - 1: 
+                    c.pos = (c.pos[0], 0)
+
+                elif c.dirny == -1 and c.pos[1] <= 0:
+                    c.pos = (c.pos[0], c.rows -1)
+                
+                else: 
+                    c.move(c.dirnx, c.dirny)
+            
+
 
     def reset(self, pos):
         pass
@@ -44,7 +103,6 @@ def draw_grid(w, rows, surface):
         y = y + size_between
 
         pygame.draw.line(surface, (255, 255, 255), (x, 0), (x, w)) # navpične črte 
-
         pygame.draw.line(surface, (255, 255, 255), (0, y), (w, y)) # vodoravne črte
 
 
@@ -74,3 +132,5 @@ def main():
         clock.tick(10) # manjša številka, počasneje gre
         redraw_window(win)
 
+main()
+pygame.quit() # tut ne pomaga
