@@ -107,8 +107,18 @@ class snake(object):
     def reset(self, pos):
         pass
 
-    def addCube(self):
-        pass
+    def add_cube(self):   # dodajanje nove kocke kači, najprej moramo ugotovit kje se nahaja zadnji cube kače, da dodamo na konec kače
+        tail = self.body[-1] 
+        dx, dy = tail.dirnx, tail.dirny
+
+        if dx == 1 and dy == 0: #če se premikamo desno
+            self.body.append(cube((tail.pos[0] - 1, tail.pos[1]))) # dodamo cube v isto vrstico v en stolpec pred zadnjim cubom kače
+        elif dx == -1 and dy == 0: # če se premikamo levo 
+            self.body.append(cube((tail.pos[0] + 1, tail.pos[1]))) # dodamo en stolpec desno od zadnjega cuba
+        elif dx == 0 and dy == 1: # če se premikamo dol
+            self.body.append((cube(tail.pos[0], tail.pos[1] - 1)))
+        elif dx == 0 and dy == -1: # če se pomikamo gor 
+            self.body.append(cube((tail.pos[0], tail.pos[1] + 1)))
 
     def draw(self, surface):
         for i, c in enumerate(self.body):
@@ -138,7 +148,18 @@ def redraw_window(surface):
     pygame.display.update()
 
 def random_snack(rows, items):
-    pass
+    positions = items.body
+
+    while True:
+        x = random.randrange(rows)
+        y = random.randrange(rows)
+        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0: #prepirčamo se da pozicija snacka ni na kači
+            continue #če se random pozicija snacka ujema s pozicijo telesa kače, potem išči nov (x, y)
+        else: #sicer vrni (x, y)
+            break
+    
+    return (x, y)
+
 
 def message_box(subject, content):
     pass
@@ -149,6 +170,7 @@ def main():
     rows = 20
     win = pygame.display.set_mode((width, width)) #naredi začetno okence
     s = snake((255, 0, 0), (10,10))
+    snack = cube(random_snack(rows, s), color=(0, 255, 0))
     flag = True
 
     clock = pygame.time.Clock()
@@ -156,6 +178,9 @@ def main():
         pygame.time.delay(50) #upočasni program, manjša številka hitreje gre
         clock.tick(10) # manjša številka, počasneje gre
         s.move()
+        if s.body[0].pos == snack.pos:
+            s.add_cube()
+            snack = cube(random_snack(rows, s), color=(0, 255, 0))
         redraw_window(win)
         
 
