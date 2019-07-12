@@ -52,7 +52,7 @@ class snake(object):
     def move(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit() # ne zapre okenca 
+                pygame.quit() # program ne deluje pravilno
 
             keys = pygame.key.get_pressed() # seznam vseh tipk z True Ali False (ali je bilo kliknjeno)
 
