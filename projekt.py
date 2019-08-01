@@ -5,11 +5,11 @@ import pygame
 import tkinter as tk
 from tkinter import messagebox
 
-class cube(object):
+class Cube(object):
     rows = 20
     w = 500
-    def __init__(self, start, dirnx=1, dirny=0, color=(255, 0, 0)):
-        self.pos = start
+    def __init__(self, begin, dirnx=1, dirny=0, color=(255, 0, 0)):
+        self.pos = begin
         self.dirnx = 1 # da se kača začne takoj premikati
         self.dirny = 0
         self.color = color
@@ -17,7 +17,7 @@ class cube(object):
     def move(self, dirnx, dirny):
         self.dirnx = dirnx
         self.dirny = dirny
-        self.pos = (self.pos[0] + self.dirnx, self.pos[1] + self.dirny)
+        self.pos = (self.pos[0] + self.dirnx , self.pos[1] + self.dirny)
 
     def draw(self, surface, eyes=False):
         distance = self.w // self.rows
@@ -38,13 +38,13 @@ class cube(object):
             
         
 
-class snake(object):
+class Snake(object):
     body = []
     turns = {} # slovar, dodamo mu trenutno pozicijo glave, kjer mora telo obrnit
     
     def __init__(self, color, pos):
         self.color = color
-        self.head = cube(pos) # glava kače je kvadrat v dani poziciji
+        self.head = Cube(pos) # glava kače je kvadrat v dani poziciji
         self.body.append(self.head) # telesu dodamo glavo (body je seznam, glava na začetku)
         self.dirnx = 0
         self.dirny = 1 
@@ -105,7 +105,7 @@ class snake(object):
 
 
     def reset(self, pos):
-        self.head = cube(pos)
+        self.head = Cube(pos)
         self.body = []
         self.body.append(self.head)
         self.turns = {}
@@ -117,13 +117,13 @@ class snake(object):
         dx, dy = tail.dirnx, tail.dirny
 
         if dx == 1 and dy == 0: #če se premikamo desno
-            self.body.append(cube((tail.pos[0] - 1, tail.pos[1]))) # dodamo cube v isto vrstico v en stolpec pred zadnjim cubom kače
+            self.body.append(Cube((tail.pos[0] - 1, tail.pos[1]))) # dodamo cube v isto vrstico v en stolpec pred zadnjim cubom kače
         elif dx == -1 and dy == 0: # če se premikamo levo 
-            self.body.append(cube((tail.pos[0] + 1, tail.pos[1]))) # dodamo en stolpec desno od zadnjega cuba
+            self.body.append(Cube((tail.pos[0] + 1, tail.pos[1]))) # dodamo en stolpec desno od zadnjega cuba
         elif dx == 0 and dy == 1: # če se premikamo dol
-            self.body.append((cube(tail.pos[0], tail.pos[1] - 1)))
+            self.body.append((Cube(tail.pos[0], tail.pos[1] - 1)))
         elif dx == 0 and dy == -1: # če se pomikamo gor 
-            self.body.append(cube((tail.pos[0], tail.pos[1] + 1)))
+            self.body.append(Cube((tail.pos[0], tail.pos[1] + 1)))
 
         self.body[-1].dirnx = dx
         self.body[-1].dirny = dy
@@ -186,8 +186,8 @@ def main():
     width = 500
     rows = 20
     win = pygame.display.set_mode((width, width)) #naredi začetno okence
-    s = snake((255, 0, 0), (10,10))
-    snack = cube(random_snack(rows, s), color=(0, 255, 0))
+    s = Snake((255, 0, 0), (10,10))
+    snack = Cube(random_snack(rows, s), color=(0, 255, 0))
     flag = True
 
     clock = pygame.time.Clock()
@@ -197,13 +197,12 @@ def main():
         s.move()
         if s.body[0].pos == snack.pos:
             s.add_cube()
-            snack = cube(random_snack(rows, s), color=(0, 255, 0))
+            snack = Cube(random_snack(rows, s), color=(0, 255, 0))
 
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z:z.pos, s.body[x+1:])):
                 print ('Score: ', len(s.body))
-                message_box('You Lost!', 'Play Again')
-                message_box()
+                message_box('You Lost! Score: {}'.format(len(s.body)), 'Play Again')
                 s.reset((10, 10))
                 break
 
