@@ -4,27 +4,45 @@
 
 import pygame 
 import tkinter as tkinter
+import menu
+from tkinter import messagebox
+
+def zacetni_meni():
+    prikaz = True
+    while prikaz:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+
+        zaslon.fill((0, 255, 0))
+        pygame.display.update()
+
+def prvo_obvestilo(naslov, vsebina):
+    okence = tkinter.Tk()
+    okence.withdraw()
+    messagebox.showinfo("Pozdravljeni!", "Kviz se začenja!")
+    okence.mainloop()
+
 
 
 
 class Kviz(object):
     def __init__(self):
-        self.vprašanje = {q, a}
-        self.izbor = ""
-        #Meni
-        izbori = ("Osnovnosolska raven", "Srednjesolska raven", "Visokosolska raven")
         pass
-
-
-
-def osnovnosolska(self):
+        
+        
+def zacni_igro():
     pass
+    #po tem ko zapres prvo okence
 
-def srednjesolska(self):
+def nastavi_vprasanje():
     pass
+    #vedno znova 
 
-def visokosolska(self):
+def preveri_odgovor():
     pass
+    #preveri ogovor, zabelezi score in zabelezi vprasanje
+
 
 
 def main():
@@ -39,9 +57,12 @@ def main():
 #da se okence takoj ne zapre oz koda ne izteče do konca
     aktivno = True
     while aktivno:
-         for event in pygame.event.get():
+        for event in pygame.event.get():
              if event.type == pygame.QUIT:
                 aktivno = False
+        prvo_obvestilo("ns", "ls")
+        zacni_igro
+        
 
 main()
 
