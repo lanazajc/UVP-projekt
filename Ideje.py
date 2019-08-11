@@ -27,3 +27,9 @@ def igra():
 
 def rezultat():
     zacetni_pozdrav("Čestitamo! Dosegli ste {} točk".format(tocke))
+
+
+    if x < pozicija_miske[0] < x + sirina_tipke and y < pozicija_miske[1] < y + visina_tipke:
+        pygame.draw.rect(zaslon, barva, (x, y, sirina_tipke, visina_tipke))
+        if klik[0] == 1 and dogodek != None:
+            dogodek()
