@@ -15,6 +15,8 @@ def igra():
     while odgovorjenih < 7:
         for vprasanje iz random uprasanje: 
             prikazi_vprasanje(vprasanja)
+
+            v prikazi_vprasanje funkcijo je treba vkljuci se 4 gumbe 
             for event in mousedown bla bla:
                 ce gumb zadane okno 
                 odgovorjenih += 1
