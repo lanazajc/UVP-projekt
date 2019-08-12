@@ -7,6 +7,7 @@ import tkinter as tkinter
 import menu
 from tkinter import messagebox
 import time
+import random
 
 pygame.init()
 sirina = 800
@@ -17,15 +18,34 @@ pygame.display.set_caption("Kviz Matematičnih 10")
 
 clock = pygame.time.Clock()
 
+odgovori = tuple()
+
 def igra():
     zaslon.fill((255, 255, 255))
-    tocke = 0
-    odgovorjenih = 0
-    while odgovorjenih < 3:
-        prikazi_vprasanje("Koliko je ura?")
-        odgovorjenih += 1
-        tocke += 1
-    rezultat(tocke)
+    naslednje_vprasanje()
+    
+
+
+def dodaj_DA():
+        global odgovori
+        odgovori = odgovori + ("DA", )
+        if len(odgovori) < 5: 
+            naslednje_vprasanje()
+        
+        
+def dodaj_NE():
+        global odgovori
+        odgovori = odgovori + ("NE", )
+        if len(odgovori) < 5: 
+             naslednje_vprasanje()
+
+def naslednje_vprasanje():
+        zaslon.fill((255, 255, 255))
+        vpr = random.choice(list(vpr_odg.keys()))
+        prikazi_vprasanje(vpr)
+
+
+        
 
 def rezultat(tocke):
         prikazi_vprasanje("Čestitamo! Dosegli ste {} točk".format(tocke))
@@ -40,11 +60,13 @@ def prikazi_vprasanje(vprasanja):
     besedilo_kvadrat.center = ((sirina / 2), (visina / 3))
     zaslon.blit(besedilo_povrsina, besedilo_kvadrat)
 
-    pygame.display.update()
+    tipke("DA", 250, 270, 100, 50, (142, 142, 142), dodaj_DA)
+    tipke("NE", 400, 270, 100, 50, (142, 142, 142), dodaj_NE)
 
-    pygame.time.delay(5000)
+    pygame.display.update()
     
-    zaslon.fill((255, 255, 255))
+    clock.tick(10)
+    
 
 def preveri_odgovor():
     pass
@@ -76,7 +98,6 @@ def besedilo_povrsina_kvadrat_pozdrav(tekst, pisava):
     povrsina_besedila = pisava.render(tekst, True, (255,255,255))
     return povrsina_besedila, povrsina_besedila.get_rect()
 
-
 def zacetni_pozdrav(tekst):
     pisava = pygame.font.Font('freesansbold.ttf', 30)
     besedilo_povrsina, besedilo_kvadrat = besedilo_povrsina_kvadrat_pozdrav(tekst, pisava)
@@ -85,13 +106,13 @@ def zacetni_pozdrav(tekst):
 
     tipke("Začni!", 250, 270, 100, 50, (142, 142, 142), igra)
     tipke("Izhod", 400, 270, 100, 50, (142, 142, 142), izhod)
-#pygame.draw.rect(zaslon, (142, 142, 142) , (250, 270, 100, 50))
 
     pygame.display.update()
     
     clock.tick(15)
     
 
+vpr_odg = {"Glavno mesto Slovenije je Ljubljana.": "DA", "1 + 1 = 2": "DA", "15 / 3 = 5": "DA", "Jabolka so modra.": "NE"}
 
 def zacetni_meni():
     prikaz = True
@@ -100,9 +121,9 @@ def zacetni_meni():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-        zacetni_pozdrav("Lankoo")
-
+        zacetni_pozdrav("Pripravljeni...")
         
+
 zacetni_meni()
 pygame.quit()
 quit()

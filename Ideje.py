@@ -37,3 +37,10 @@ za vsak klik z misko program preveri na katerem gumbu se je kliknilo in nato nar
 Ce kliknes na gumb naslednje vprasanje a si bonus ze izkoristil, se izpise Erroor tkinter sporocilo.
 
 Na koncu, po zadnjem (X) vprasanju se izpisejo tocke. 
+
+definicija igre: 
+- bel zaslon
+tocke = 0
+odgovorjenih = 0
+vpr = random vprasanje
+prikazi_vprasanje(vpr)
