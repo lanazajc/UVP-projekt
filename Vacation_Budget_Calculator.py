@@ -1,68 +1,79 @@
 ## Vacation Budget calculator ##
 import tkinter as tk
+from tkinter import *
 
 class Budget(object):
 
     def __init__(self, strosek):
-        self.strosek = strosek
 
-        self.text_nocitve = tk.Label(root, text="Število nočitev")
-        self.text_nocitve.place(x = 20, y = 50)
-        self.text_nocitve.config(font=("Courier", 15))
+        Label(root, text= "Število nočitev").grid(row = 1, column = 1, sticky = W)
+      
+        Label(root, text = "Število oseb").grid(row=2, column = 1, sticky = W)
 
-        self.okno_nocitve = tk.Entry(root, width = 10)
-        self.okno_nocitve.place(x = 270, y = 55)
-        self.okno_nocitve.insert(0, "0")
+        Label(root, text = "Pričakovan strošek prevoza").grid(row = 3, column = 1, sticky = W)
 
-        self.text_osebe = tk.Label(root, text="Število oseb")
-        self.text_osebe.place(x = 20, y = 100)
-        self.text_osebe.config(font=("Courier", 15))
+        Label(root, text = "Povprečen strošek nočitve").grid(row = 4, column = 1, sticky = W)
 
-        self.okno_osebe = tk.Entry(root, width = 10)
-        self.okno_osebe.place(x = 270, y = 105)
-        self.okno_osebe.insert(0, "0")
+        Label(root, text = "Dnevni strošek hrane in pijače na osebo").grid(row = 5, column = 1, sticky = W)
 
-        self.text_prevoz = tk.Label(root, text="Pričakovan strošek prevoza")
-        self.text_prevoz.place(x = 20, y = 150)
-        self.text_prevoz.config(font=("Courier", 15))
+        Label(root, text = "Dnevni strošek ogledov, atrakcij, ...").grid(row = 6, column = 1, sticky = W)
 
-        self.okno_prevoz = tk.Entry(root, width = 10)
-        self.okno_prevoz.place(x = 400, y = 160)
-        self.okno_prevoz.insert(0, "0")
+        self.stevilo_nocitev = IntVar()
+        self.stevilo_oseb = IntVar()
+        self.prevoz = DoubleVar
+        self.nocitev = DoubleVar
+        self.hrana_pijaca = DoubleVar
+        self.ogledi = DoubleVar
+        self.skupni_stroški = StringVar
+        self.ostali_stroski = StringVar
+        self.prevoz_nastanitev = StringVar
 
-        self.text_str_nocive = tk.Label(root, text="Povprečen strošek nočitve")
-        self.text_str_nocive.place(x = 20, y = 200)
-        self.text_str_nocive.config(font=("Courier", 15))
+        Entry(root, textvariable= self.stevilo_nocitev).grid(row = 1, column = 2)
+        Entry(root, textvariable = self.stevilo_oseb).grid(row = 2, column = 2)
+        Entry(root, textvariable= self.prevoz).grid(row = 3, column = 2)
+        Entry(root, textvariable = self.nocitev).grid(row = 4, column = 2)
+        Entry(root, textvariable= self.hrana_pijaca).grid(row = 5, column = 2)
+        Entry(root, textvariable = self.ogledi).grid(row = 6, column = 2)
 
-        self.okno_str_nocitve = tk.Entry(root, width = 10)
-        self.okno_str_nocitve.place(x = 400, y = 205)
-        self.okno_str_nocitve.insert(0, "0")
+        izracun = Button(text = "Izračunaj", command = self.izracun_skupni_stroški).grid(row = 7, column = 2)
 
-        self.text_hrana_pijača = tk.Label(root, text="Dnevni strošek hrane in pijače na osebo")
-        self.text_hrana_pijača.place(x = 20, y = 250)
-        self.text_hrana_pijača.config(font=("Courier", 15))
-        
-        self.okno_hrana_pijača = tk.Entry(root, width = 10)
-        self.okno_hrana_pijača.place(x = 520, y = 255)
-        self.okno_hrana_pijača.insert(0, "0")
+        Label(root, text = "Skupni strošek").grid(row = 8, column = 1, sticky = E)
+        Label(root, text = "od tega prevoz in nastanitev").grid(row = 9, column = 1, sticky = E)
+        Label(root, text = "ostali stroški").grid(row = 10, column = 1, sticky = E)
 
-        self.okno_fiksno_str = tk.Label(root, text='None')
-        self.okno_fiksno_str.place(x= 700,  y = 500)
+        skupni_stroski = Label(root, textvariable = self.skupni_stroški).grid(row = 8, column = 1, sticky = E)
+        prevoz_nastanitev = Label(root, textvariable = self.prevoz_nastanitev).grid(row = 9, column = 1, sticky = E)
+        ostali_stroski = Label(root, textvariable = self.ostali_stroski).grid(row = 10, column = 1, sticky = E)
 
+        root.mainloop()
 
-    def izračun_fiksni_stroški():
+    def izračun_ostali_stroški(self):
+        pass
+  
+  
+    def izračun_prevoz_in_nastanitve(self):
         self.fiksni_stroški = int(self.okno_nocitve.get()) * int(self.okno_str_nocitve.get())
 
         self.okno_fiksno_str = tk.Label(root, text=str(self.fiksni_stroški))
         self.okno_fiksno_str.place(x= 700,  y = 500)
 
+ 
+    def izracun_skupni_stroški(self):
+        skupni_stroski = (self.stevilo_nocitev.get() * self.nocitev.get())
+        return skupni_stroski
 
-    def pretvori_v_valuto():
-        pass
+        self.skupni_stroski.set(skupni_stroski)
+        
+    
+
+
+    
+
+
+
 
 root = tk.Tk()
 root.title("Stroškovnik dopusta")
 stroškovnik = Budget(root)
-root.geometry("800x600")
-root.after(100, stroškovnik.izračun_fiksni_stroški)
+#root.geometry("800x600")
 root.mainloop()
