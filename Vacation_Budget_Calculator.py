@@ -49,15 +49,11 @@ class Budget(object):
         prevoznastanitev = Label(root, textvariable = self.prevoz_nastanitev).grid(row = 11, column = 2, sticky = E)
         ostalistroski = Label(root, textvariable = self.ostali_stroski).grid(row = 12, column = 2, sticky = E)
 
-     
         Label(root, text = "",bg="white", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
 
-    #def prikazno_okno(self):
-        #canvas = Canvas(root, width = 500, height = 500)
-        #canvas.grid(row = 8, column = 3, rowspan = 3)
-        #canvas.create_rectangle(100,100,200,200,fill="#fb0")
-
-    
+    def preveri_vnose(self, st_nocitev, st_oseb, prevoz, str_nocitev, h_p, ogledi):
+        if st_nocitev >= 0 and st_oseb >= 0 and prevoz >= 0 and str_nocitev >= 0 and h_p >= 0 and ogledi >= 0:
+            return True
 
 
     def izračun_ostali_stroški(self, osebe, hrana_in_pijaca, ogledi, dnevi):
@@ -81,18 +77,17 @@ class Budget(object):
 
         self.ostali_stroski.set(ostalistroski)
 
-        if self.budget.get() - skupnistroski > 0:
-            Label(root, text = "Juhu! Uživaj na dopustu",bg="green", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
-        elif self.budget.get() - skupnistroski <=  0:
-            Label(root, text = "Raje še malo varčuj...",bg="red", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
-            
-
-
-
-
+        pregled = self.preveri_vnose(self.stevilo_nocitev.get(), self.stevilo_oseb.get(), self.prevoz.get(), self.nocitev.get(), self.hrana_pijaca.get(), self.ogledi.get())
+     
+        if pregled: 
+            if self.budget.get() - skupnistroski > 0:
+                Label(root, text = "Juhu! Uživaj na dopustu!",bg="springgreen2", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
+            elif self.budget.get() - skupnistroski <=  0:
+                Label(root, text = "Raje še malo varčuj...",bg="firebrick1", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
+        else: 
+            Label(root, text = "Vnesli ste negativno število!",bg="PaleVioletRed1", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
 
 root = tk.Tk()
 root.title("Stroškovnik dopusta")
 stroškovnik = Budget(root)
-#root.geometry("800x600")
 root.mainloop()
