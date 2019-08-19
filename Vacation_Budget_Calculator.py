@@ -6,18 +6,21 @@ class Budget(object):
 
     def __init__(self, strosek):
 
-        Label(root, text= "Število nočitev").grid(row = 1, column = 1, sticky = W)
+        Label(root, text = "Budget").grid(row = 0, column = 1,  columnspan= 2)
+
+        Label(root, text= "Število nočitev").grid(row = 3, column = 1, sticky = W)
       
-        Label(root, text = "Število oseb").grid(row=2, column = 1, sticky = W)
+        Label(root, text = "Število oseb").grid(row=4, column = 1, sticky = W)
 
-        Label(root, text = "Pričakovan strošek prevoza").grid(row = 3, column = 1, sticky = W)
+        Label(root, text = "Pričakovan strošek prevoza").grid(row = 5, column = 1, sticky = W)
 
-        Label(root, text = "Povprečen strošek nočitve").grid(row = 4, column = 1, sticky = W)
+        Label(root, text = "Povprečen strošek nočitve").grid(row = 6, column = 1, sticky = W)
 
-        Label(root, text = "Dnevni strošek hrane in pijače na osebo").grid(row = 5, column = 1, sticky = W)
+        Label(root, text = "Dnevni strošek hrane in pijače na osebo").grid(row = 7, column = 1, sticky = W)
 
-        Label(root, text = "Dnevni strošek ogledov, atrakcij, ...").grid(row = 6, column = 1, sticky = W)
+        Label(root, text = "Dnevni strošek ogledov, atrakcij, ...").grid(row = 8, column = 1, sticky = W)
 
+        self.budget = DoubleVar()
         self.stevilo_nocitev = IntVar()
         self.stevilo_oseb = IntVar()
         self.prevoz = DoubleVar()
@@ -28,22 +31,33 @@ class Budget(object):
         self.ostali_stroski = StringVar()
         self.prevoz_nastanitev = StringVar()
 
-        Entry(root, textvariable= self.stevilo_nocitev).grid(row = 1, column = 2)
-        Entry(root, textvariable = self.stevilo_oseb).grid(row = 2, column = 2)
-        Entry(root, textvariable= self.prevoz).grid(row = 3, column = 2)
-        Entry(root, textvariable = self.nocitev).grid(row = 4, column = 2)
-        Entry(root, textvariable= self.hrana_pijaca).grid(row = 5, column = 2)
-        Entry(root, textvariable = self.ogledi).grid(row = 6, column = 2)
+        Entry(root, textvariable = self.budget).grid(row = 2, column = 1, columnspan = 2)
+        Entry(root, textvariable= self.stevilo_nocitev).grid(row = 3, column = 2)
+        Entry(root, textvariable = self.stevilo_oseb).grid(row = 4, column = 2)
+        Entry(root, textvariable= self.prevoz).grid(row = 5, column = 2)
+        Entry(root, textvariable = self.nocitev).grid(row = 6, column = 2)
+        Entry(root, textvariable= self.hrana_pijaca).grid(row = 7, column = 2)
+        Entry(root, textvariable = self.ogledi).grid(row = 8, column = 2)
 
-        izracun = Button(text = "Izračunaj", command = self.izracun_skupni_stroški).grid(row = 7, column = 2)
+        izracun = Button(text = "Izračunaj", command = self.izracun_skupni_stroški).grid(row = 9, column = 2)
 
-        Label(root, text = "Skupni strošek").grid(row = 8, column = 1, sticky = E)
-        Label(root, text = "od tega prevoz in nastanitev").grid(row = 9, column = 1, sticky = E)
-        Label(root, text = "ostali stroški").grid(row = 10, column = 1, sticky = E)
+        Label(root, text = "Skupni strošek").grid(row = 10, column = 1, sticky = E)
+        Label(root, text = "od tega prevoz in nastanitev").grid(row = 11, column = 1, sticky = E)
+        Label(root, text = "ostali stroški").grid(row = 12, column = 1, sticky = E)
 
-        skupnistroski = Label(root, textvariable = self.skupni_stroski).grid(row = 8, column = 2, sticky = E)
-        prevoznastanitev = Label(root, textvariable = self.prevoz_nastanitev).grid(row = 9, column = 2, sticky = E)
-        ostalistroski = Label(root, textvariable = self.ostali_stroski).grid(row = 10, column = 2, sticky = E)
+        skupnistroski = Label(root, textvariable = self.skupni_stroski).grid(row = 10, column = 2, sticky = E)
+        prevoznastanitev = Label(root, textvariable = self.prevoz_nastanitev).grid(row = 11, column = 2, sticky = E)
+        ostalistroski = Label(root, textvariable = self.ostali_stroski).grid(row = 12, column = 2, sticky = E)
+
+     
+        Label(root, text = "",bg="white", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
+
+    #def prikazno_okno(self):
+        #canvas = Canvas(root, width = 500, height = 500)
+        #canvas.grid(row = 8, column = 3, rowspan = 3)
+        #canvas.create_rectangle(100,100,200,200,fill="#fb0")
+
+    
 
 
     def izračun_ostali_stroški(self, osebe, hrana_in_pijaca, ogledi, dnevi):
@@ -67,11 +81,12 @@ class Budget(object):
 
         self.ostali_stroski.set(ostalistroski)
 
-        
-    
+        if self.budget.get() - skupnistroski > 0:
+            Label(root, text = "Juhu! Uživaj na dopustu",bg="green", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
+        elif self.budget.get() - skupnistroski <=  0:
+            Label(root, text = "Raje še malo varčuj...",bg="red", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
+            
 
-
-    
 
 
 
