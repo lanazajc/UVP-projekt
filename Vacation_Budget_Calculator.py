@@ -20,13 +20,13 @@ class Budget(object):
 
         self.stevilo_nocitev = IntVar()
         self.stevilo_oseb = IntVar()
-        self.prevoz = DoubleVar
-        self.nocitev = DoubleVar
-        self.hrana_pijaca = DoubleVar
-        self.ogledi = DoubleVar
-        self.skupni_stroški = StringVar
-        self.ostali_stroski = StringVar
-        self.prevoz_nastanitev = StringVar
+        self.prevoz = DoubleVar()
+        self.nocitev = DoubleVar()
+        self.hrana_pijaca = DoubleVar()
+        self.ogledi = DoubleVar()
+        self.skupni_stroski = StringVar()
+        self.ostali_stroski = StringVar()
+        self.prevoz_nastanitev = StringVar()
 
         Entry(root, textvariable= self.stevilo_nocitev).grid(row = 1, column = 2)
         Entry(root, textvariable = self.stevilo_oseb).grid(row = 2, column = 2)
@@ -41,28 +41,32 @@ class Budget(object):
         Label(root, text = "od tega prevoz in nastanitev").grid(row = 9, column = 1, sticky = E)
         Label(root, text = "ostali stroški").grid(row = 10, column = 1, sticky = E)
 
-        skupni_stroski = Label(root, textvariable = self.skupni_stroški).grid(row = 8, column = 1, sticky = E)
-        prevoz_nastanitev = Label(root, textvariable = self.prevoz_nastanitev).grid(row = 9, column = 1, sticky = E)
-        ostali_stroski = Label(root, textvariable = self.ostali_stroski).grid(row = 10, column = 1, sticky = E)
+        skupnistroski = Label(root, textvariable = self.skupni_stroski).grid(row = 8, column = 2, sticky = E)
+        prevoznastanitev = Label(root, textvariable = self.prevoz_nastanitev).grid(row = 9, column = 2, sticky = E)
+        ostalistroski = Label(root, textvariable = self.ostali_stroski).grid(row = 10, column = 2, sticky = E)
 
-        root.mainloop()
 
-    def izračun_ostali_stroški(self):
-        pass
+    def izračun_ostali_stroški(self, osebe, hrana_in_pijaca, ogledi, dnevi):
+        ostalistroski = osebe * (hrana_in_pijaca + ogledi) * dnevi
+        return ostalistroski
   
   
-    def izračun_prevoz_in_nastanitve(self):
-        self.fiksni_stroški = int(self.okno_nocitve.get()) * int(self.okno_str_nocitve.get())
-
-        self.okno_fiksno_str = tk.Label(root, text=str(self.fiksni_stroški))
-        self.okno_fiksno_str.place(x= 700,  y = 500)
-
+    def izračun_prevoz_in_nastanitve(self, st_nocitev, str_nocitev, prevoz):
+        prevoznastanitev = (st_nocitev * str_nocitev) + prevoz
+        return prevoznastanitev
  
     def izracun_skupni_stroški(self):
-        skupni_stroski = (self.stevilo_nocitev.get() * self.nocitev.get())
-        return skupni_stroski
+        prevoznastanitev = self.izračun_prevoz_in_nastanitve(self.stevilo_nocitev.get(),self.nocitev.get(),self.prevoz.get())
+        ostalistroski = self.izračun_ostali_stroški(self.stevilo_oseb.get(), self.hrana_pijaca.get(), self.ogledi.get(), self.stevilo_nocitev.get() + 1 )
 
-        self.skupni_stroski.set(skupni_stroski)
+        skupnistroski = prevoznastanitev + ostalistroski 
+
+        self.skupni_stroski.set(skupnistroski)
+        
+        self.prevoz_nastanitev.set(prevoznastanitev)
+
+        self.ostali_stroski.set(ostalistroski)
+
         
     
 
