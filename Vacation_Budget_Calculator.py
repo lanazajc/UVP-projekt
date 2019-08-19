@@ -10,7 +10,7 @@ class Budget(object):
 
         Label(root, text= "Število nočitev").grid(row = 3, column = 1, sticky = W)
       
-        Label(root, text = "Število oseb").grid(row=4, column = 1, sticky = W)
+        Label(root, text = "Število oseb").grid(row = 4, column = 1, sticky = W)
 
         Label(root, text = "Pričakovan strošek prevoza").grid(row = 5, column = 1, sticky = W)
 
@@ -49,7 +49,7 @@ class Budget(object):
         prevoznastanitev = Label(root, textvariable = self.prevoz_nastanitev).grid(row = 11, column = 2, sticky = E)
         ostalistroski = Label(root, textvariable = self.ostali_stroski).grid(row = 12, column = 2, sticky = E)
 
-        Label(root, text = "",bg="white", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
+        Label(root, text = "",bg = "white", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
 
     def preveri_vnose(self, st_nocitev, st_oseb, prevoz, str_nocitev, h_p, ogledi):
         if st_nocitev >= 0 and st_oseb >= 0 and prevoz >= 0 and str_nocitev >= 0 and h_p >= 0 and ogledi >= 0:
@@ -81,11 +81,11 @@ class Budget(object):
      
         if pregled: 
             if self.budget.get() - skupnistroski > 0:
-                Label(root, text = "Juhu! Uživaj na dopustu!",bg="springgreen2", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
+                Label(root, text = "Juhu! Uživaj na dopustu!",bg = "springgreen2", padx = 15, pady = 15).grid(row = 10, column = 3, rowspan = 3)
             elif self.budget.get() - skupnistroski <=  0:
-                Label(root, text = "Raje še malo varčuj...",bg="firebrick1", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
+                Label(root, text = "Raje še malo varčuj...",bg = "firebrick1", padx = 15, pady = 15).grid(row = 10, column = 3, rowspan = 3)
         else: 
-            Label(root, text = "Vnesli ste negativno število!",bg="PaleVioletRed1", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
+            Label(root, text = "Vnesli ste negativno število!",bg = "PaleVioletRed1", padx = 15, pady = 15).grid(row = 10, column = 3, rowspan = 3)
 
 root = tk.Tk()
 root.title("Stroškovnik dopusta")
