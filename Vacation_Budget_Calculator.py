@@ -66,6 +66,7 @@ class Budget(object):
         return prevoznastanitev
  
     def izracun_skupni_stroški(self):
+
         prevoznastanitev = self.izračun_prevoz_in_nastanitve(self.stevilo_nocitev.get(),self.nocitev.get(),self.prevoz.get())
         ostalistroski = self.izračun_ostali_stroški(self.stevilo_oseb.get(), self.hrana_pijaca.get(), self.ogledi.get(), self.stevilo_nocitev.get() + 1 )
 
@@ -79,13 +80,14 @@ class Budget(object):
 
         pregled = self.preveri_vnose(self.stevilo_nocitev.get(), self.stevilo_oseb.get(), self.prevoz.get(), self.nocitev.get(), self.hrana_pijaca.get(), self.ogledi.get())
      
-        if pregled: 
-            if self.budget.get() - skupnistroski > 0:
-                Label(root, text = "Juhu! Uživaj na dopustu!",bg = "springgreen2", padx = 15, pady = 15).grid(row = 10, column = 3, rowspan = 3)
-            elif self.budget.get() - skupnistroski <=  0:
-                Label(root, text = "Raje še malo varčuj...",bg = "firebrick1", padx = 15, pady = 15).grid(row = 10, column = 3, rowspan = 3)
+        if pregled:
+            razlika = self.budget.get() - skupnistroski     
+            if razlika > 0:
+                Label(text = "Juhu! Uživaj na dopustu!",bg = "springgreen2", padx = 15, pady = 15).grid(row = 10, column = 3, rowspan = 3)
+            elif razlika <=  0:
+                Label(root, text = "Nažalost ti manjka {}€...".format(abs(int(razlika))),bg = "firebrick1", padx = 15, pady = 15).grid(row = 10, column = 3, rowspan = 3)
         else: 
-            Label(root, text = "Vnesli ste negativno število!",bg = "PaleVioletRed1", padx = 15, pady = 15).grid(row = 10, column = 3, rowspan = 3)
+            Label(root, text = "Vnesli ste negativno število!",bg = "PaleVioletRed1", padx = 10, pady = 15).grid(row = 10, column = 3, rowspan = 3)
 
 root = tk.Tk()
 root.title("Stroškovnik dopusta")
