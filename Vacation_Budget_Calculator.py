@@ -49,8 +49,6 @@ class Budget(object):
         prevoznastanitev = Label(root, textvariable = self.prevoz_nastanitev).grid(row = 11, column = 2, sticky = E)
         ostalistroski = Label(root, textvariable = self.ostali_stroski).grid(row = 12, column = 2, sticky = E)
 
-        Label(root, text = "",bg = "white", padx = 15, pady = 15  ).grid(row = 10, column = 3, rowspan = 3)
-
     def preveri_vnose(self, st_nocitev, st_oseb, prevoz, str_nocitev, h_p, ogledi):
         if st_nocitev >= 0 and st_oseb >= 0 and prevoz >= 0 and str_nocitev >= 0 and h_p >= 0 and ogledi >= 0:
             return True
@@ -78,16 +76,22 @@ class Budget(object):
 
         self.ostali_stroski.set(ostalistroski)
 
+        lbl = Label(root, text = "",bg = "white",width = 23, height = 3)
+        
+        lbl.grid(row = 10, column = 3, rowspan = 3)
+
         pregled = self.preveri_vnose(self.stevilo_nocitev.get(), self.stevilo_oseb.get(), self.prevoz.get(), self.nocitev.get(), self.hrana_pijaca.get(), self.ogledi.get())
-     
         if pregled:
             razlika = self.budget.get() - skupnistroski     
             if razlika > 0:
-                Label(text = "Juhu! Uživaj na dopustu!",bg = "springgreen2", padx = 15, pady = 15).grid(row = 10, column = 3, rowspan = 3)
-            elif razlika <=  0:
-                Label(root, text = "Nažalost ti manjka {}€...".format(abs(int(razlika))),bg = "firebrick1", padx = 15, pady = 15).grid(row = 10, column = 3, rowspan = 3)
+                lbl.config(text = "Juhu! Uživaj na dopustu!", bg = "spring green")
+            elif razlika <  0:
+                lbl.config(text = "Žal ti manjka {}€".format(abs(razlika)), bg = "firebrick2")
+            elif razlika == 0:
+                lbl.config(text = "Raje še malo varčuj...", bg = "khaki1")
         else: 
-            Label(root, text = "Vnesli ste negativno število!",bg = "PaleVioletRed1", padx = 10, pady = 15).grid(row = 10, column = 3, rowspan = 3)
+            lbl.config(text = "Vnesli ste negativno število!", bg = "deep sky blue")
+
 
 root = tk.Tk()
 root.title("Stroškovnik dopusta")
